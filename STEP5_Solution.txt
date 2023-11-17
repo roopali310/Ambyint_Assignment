@@ -1,0 +1,87 @@
+﻿STEP 5
+
+
+
+
+
+
+
+
+
+
+Problem2: Which Movie had the longest timespan from release to appearing on Netflix?
+Solution:
+CREATE VIEW Longest_Timespan AS
+    
+With Time_to_Netflix   as
+(
+SELECT title,
+  ((substring(date_added, -4, 4)) - release_year) as time_to_show
+FROM
+  NETFLIX_DATA ) 
+  select (time_to_show), title from Time_to_Netflix order by time_to_show desc
+  ;
+
+
+
+
+
+
+
+
+
+
+Problem3: Which Month of the year had the most new releases historically?
+Solution:
+             create view New_Release_MonthYear (Count_of_Movies, Release_Date) as
+              select count(RELEASE_DATE) as cnt, RELEASE_DATE from  
+              (
+                SELECT 
+                (SPLIT_PART(NETFLIX_DATA.date_added::string, ' ', 1) || 
+                SUBSTR(date_added, -4)) AS RELEASE_DATE
+                FROM 
+                NETFLIX_DATA 
+                )
+               group by RELEASE_DATE order by cnt desc 
+               ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Problem 4: Which year had the largest increase year on year (percentage wise) for TV Shows?
+Solution:
+create view Largest_Increase_On_Year (Movie_Count, Release_Year,            Percent_year) as
+select count(RELEASE_DATE) as cnt, RELEASE_DATE,
+((CNT - LAG(CNT) OVER (ORDER BY release_date))/(LAG(CNT) OVER (ORDER BY release_date))*100) AS diff_to_prev
+  from  
+(
+  SELECT 
+    --(SPLIT_PART(NETFLIX_DATA.date_added::string, ' ', 1) || 
+    SUBSTR(date_added, -4) AS RELEASE_DATE  
+  FROM 
+   NETFLIX_DATA where type='TV Show' 
+   )
+ group by RELEASE_DATE order by diff_to_prev desc 
+;
