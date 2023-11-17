@@ -1,0 +1,7 @@
+﻿STEP 2:
+create task load_netflix_titles
+warehouse= COMPUTE_WH
+as
+copy into Netflix_Titles from @my_csv_format/Users/Roopali/Downloads/netflix_titles.csv
+FILE_FORMAT = (type = my_csv_format)
+;
