@@ -1,14 +1,6 @@
 ﻿STEP 5
 
 
-
-
-
-
-
-
-
-
 Problem2: Which Movie had the longest timespan from release to appearing on Netflix?
 Solution:
 CREATE VIEW Longest_Timespan AS
@@ -21,13 +13,6 @@ FROM
   NETFLIX_DATA ) 
   select (time_to_show), title from Time_to_Netflix order by time_to_show desc
   ;
-
-
-
-
-
-
-
 
 
 
@@ -44,29 +29,6 @@ Solution:
                 )
                group by RELEASE_DATE order by cnt desc 
                ;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
