@@ -1,0 +1,80 @@
+﻿Step 3:
+import snowflake.snowpark as snowpark
+from snowflake.snowpark.functions import col
+import snowflake.connector
+import pandas as pd
+import re
+import warnings
+warnings.filterwarnings('ignore')
+
+
+def main(session: snowpark.Session): 
+df = pd.read_csv('/Users/Roopali/Downloads/netflix_titles (1).csv')
+
+
+#creating a copy of dataframe with only header
+df2 = df[0:0]
+
+
+# generate fictious values for dataframe df2
+fictious_data_1 = {'show_id': 's7788', 'type': 'Movie', 'country': 'Canada'}
+df2.loc[len(df2)] = fictious_data_1
+
+
+# Set 'show_id' as the index for both dataframes
+df.set_index('show_id', inplace=True)
+df2.set_index('show_id', inplace=True)
+
+
+# Update values in the first dataframe based on the second dataframe
+df.update(df2, overwrite=True)
+
+
+# Concatenate the first dataframe with new rows from the second dataframe
+df = pd.concat([df, df2.loc[~df2.index.isin(df.index)]], sort=False)
+
+
+# Reset the index to bring back the 'show_id' column
+df.reset_index(inplace=True)
+
+
+
+
+#creating a copy of another dataframe with only header
+df3 = df[0:0]
+
+
+# generate fictious values for dataframe df3
+fictious_data_2 = {'show_id': 's7789', 'type': 'TV Shows', 'country': 'Canada'}
+df3.loc[len(df3)] = fictious_data_2
+
+
+fictious_data_3 = {'show_id': 's1', 'type': 'Movie', 'country': 'USA'}
+df3.loc[len(df3)] = fictious_data_3
+
+
+
+
+
+
+# Set 'show_id' as the index for both dataframes
+df.set_index('show_id', inplace=True)
+df3.set_index('show_id', inplace=True)
+
+
+# Update values in the first dataframe based on the second dataframe
+df.update(df3, overwrite=True)
+
+
+# Concatenate the first dataframe with new rows from the second dataframe
+result_df = pd.concat([df, df3.loc[~df3.index.isin(df.index)]], sort=False)
+
+
+# Reset the index to bring back the 'show_id' column
+result_df.reset_index(inplace=True)
+
+
+result_df.to_csv('/Users/Roopali/Downloads/netflix_titles (1).csv', index=False)
+
+
+Comments: This python code has been tested using Anaconda and it is working as per expected, while I tried to run using snowflake python worksheet then it needs some more handlers/libraries to be included.
