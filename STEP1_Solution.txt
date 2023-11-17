@@ -22,9 +22,6 @@ create or replace TABLE AMBYINT_DB.ASSIGNMENT.NETFLIX_DATA (
 
 
 
-
-
-
 COPY INTO "AMBYINT_DB"."ASSIGNMENT"."NETFLIX_TILTLES"
 FROM '@"AMBYINT_DB"."ASSIGNMENT"."%NETFLIX_TILTLES"/__snowflake_temp_import_files__/'
 FILES = ('netflix_titles.csv')
@@ -41,3 +38,4 @@ FILE_FORMAT = (
 )
 ON_ERROR=ABORT_STATEMENT
 PURGE=TRUE
+
